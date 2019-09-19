@@ -1,0 +1,46 @@
+En la clase Profesor
+public List<Curso> obtenerCursosConIngresanteAnterioresA(int añoDeIngreso){
+Iterator<Curso> it=this.cursosDictados.iterator();
+List<Curso> cursosConIngresantesAnteriores=new ArrayList<>();
+while (it.hasNext()) {
+Curso curso = it.next();
+if(curso.tieneIngresanteAnteriorA(añoDeIngreso)){
+cursosConIngresantesAnteriores.add(curso);
+}
+}
+return cursosConIngresantesAnteriores;
+}
+En la clase Curso
+public boolean tieneIngresanteAnteriorA(int añoDeIngreso) {
+Iterator<Alumno> it= this.alumnos.iterator();
+while (it.hasNext()) {
+Alumno alumno = it.next();
+if(alumno.getAñoDeIngreso()<añoDeIngreso)
+return true;
+}
+return false;
+
+****
+
+/**El metodo agrega un nuevo alumno en el curso solo si aun no se supero el
+limite maximo de inscriptos.
+*
+* @param nuevoAlumno alumno a agregar al curso
+* @return devuelve true en caso de poder agregar al alumno y false en caso
+contrario
+*/
+public boolean agregarAlumno(Alumno nuevoAlumno){
+if(this.alumnos.size()<this.maximoAlumnos){
+this.alumnos.add(nuevoAlumno);
+nuevoAlumno.addCurso(this);
+return true;
+}
+return false;
+}
+
+******
+
+select a.añoDeIngreso, count(a.añoDeIngreso) from Alumno a where a.dni IN (Select i.Alumno_dni
+from Inscriptos_a_Curso i) group by a.añoDeIngreso order by a.añoDeIngreso DESC
+2018 2
+2017 1
